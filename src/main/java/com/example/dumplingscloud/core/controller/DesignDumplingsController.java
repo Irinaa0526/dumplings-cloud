@@ -3,9 +3,11 @@ package com.example.dumplingscloud.core.controller;
 import com.example.dumplingscloud.core.model.Dumplings;
 import com.example.dumplingscloud.core.model.DumplingsOrder;
 import com.example.dumplingscloud.core.model.Ingredient;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -75,7 +77,12 @@ public class DesignDumplingsController {
     }
 
     @PostMapping
-    public String processDumplings(Dumplings dumplings, @ModelAttribute DumplingsOrder dumplingsOrder) {
+    public String processDumplings(@Valid Dumplings dumplings, Errors errors,
+                                   @ModelAttribute DumplingsOrder dumplingsOrder) {
+        if (errors.hasErrors()) {
+            return "design";
+        }
+
         dumplingsOrder.addDumplings(dumplings);
         log.info("Processing dumplings: {}", dumplings);
 
