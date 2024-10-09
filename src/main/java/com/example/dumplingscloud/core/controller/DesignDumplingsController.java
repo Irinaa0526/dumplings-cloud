@@ -3,8 +3,10 @@ package com.example.dumplingscloud.core.controller;
 import com.example.dumplingscloud.core.model.Dumplings;
 import com.example.dumplingscloud.core.model.DumplingsOrder;
 import com.example.dumplingscloud.core.model.Ingredient;
+import com.example.dumplingscloud.core.repo.IngredientRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -20,36 +22,19 @@ import java.util.stream.Collectors;
 @SessionAttributes("dumplingsOrder")
 public class DesignDumplingsController {
 
+    private final IngredientRepository ingredientRepository;
+
+    @Autowired
+    public DesignDumplingsController(IngredientRepository ingredientRepository) {
+        this.ingredientRepository = ingredientRepository;
+    }
+
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
-        List<Ingredient> ingredients = Arrays.asList(
-                new Ingredient("CLS", "Classic", Ingredient.Type.WRAP),
-                new Ingredient("TMT", "Tomato", Ingredient.Type.WRAP),
-                new Ingredient("GRC", "Garlic", Ingredient.Type.WRAP),
-                new Ingredient("SPN", "Spinach", Ingredient.Type.WRAP),
-
-                new Ingredient("BF", "Beef", Ingredient.Type.PROTEIN),
-                new Ingredient("PRK", "Pork", Ingredient.Type.PROTEIN),
-                new Ingredient("LMB", "Lamb", Ingredient.Type.PROTEIN),
-                new Ingredient("CHKN", "Chicken", Ingredient.Type.PROTEIN),
-
-                new Ingredient("CHED", "Cheddar", Ingredient.Type.CHEESE),
-                new Ingredient("JACK", "Monterrey Jack", Ingredient.Type.CHEESE),
-
-                new Ingredient("TOM", "Tomato", Ingredient.Type.SAUCE),
-                new Ingredient("MNS", "Mayonnaise", Ingredient.Type.SAUCE),
-                new Ingredient("SCR", "Sour cream", Ingredient.Type.SAUCE),
-                new Ingredient("GAR", "Garlic", Ingredient.Type.SAUCE),
-                new Ingredient("TKE", "Tkemali", Ingredient.Type.SAUCE),
-                new Ingredient("MATS", "Matsoni", Ingredient.Type.SAUCE),
-                new Ingredient("SATS", "Satsebeli", Ingredient.Type.SAUCE),
-                new Ingredient("ADJ", "Adjika", Ingredient.Type.SAUCE)
-        );
-
+        Iterable<Ingredient> ingredients = ingredientRepository.findAll();
         Ingredient.Type[] types = Ingredient.Type.values();
-        for (Ingredient.Type type : types) {
-            model.addAttribute(type.toString().toLowerCase(),
-                    filterByType(ingredients, type));
+        for(Ingredient.Type type : types) {
+            model.addAttribute(type.toString().toLowerCase(), filterByType((List<Ingredient>) ingredients, type));
         }
         model.addAttribute("size", Dumplings.Size.values());
     }
