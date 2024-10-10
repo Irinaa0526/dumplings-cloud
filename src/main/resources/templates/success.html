@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Success create order</title>
+    <link rel="stylesheet" th:href="@{../css/style.css}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="12;URL=/" />
+</head>
+<body class="font success">
+
+    <h1 class="header-design success-text-center">Success create order</h1>
+    <div id="countdown"></div>
+
+    <script>
+        // Устанавливаем дату и время окончания отсчета (например, 10 секунд от текущего времени)
+        let countDownDate = new Date().getTime() + 12 * 1000;
+
+        // Обновляем каждый 1 секунду
+        let x = setInterval(function() {
+
+            // Получаем текущее время
+            let now = new Date().getTime();
+
+            // Вычисляем оставшееся время
+            let distance = countDownDate - now;
+
+            // Вычисляем секунды
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Отображаем результаты на странице
+            document.getElementById("countdown").innerHTML = "Redirect to home page " + seconds + "s";
+
+            // Если отсчет завершён, выводим сообщение
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "Redirect ...";
+            }
+        }, 1000);
+    </script>
+
+</body>
+</html>

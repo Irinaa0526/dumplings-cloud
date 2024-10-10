@@ -172,3 +172,85 @@
 .validationError {
     color: red;
 }
+
+@keyframes slideme {
+    0% {
+        left: -30px;
+        margin-left: 0px;
+    }
+    30% {
+        left: 110%;
+        margin-left: 80px;
+    }
+    100% {
+        left: 110%;
+        margin-left: 80px;
+    }
+}
+
+.btn-home-new {
+    overflow: hidden;
+    position: relative;
+    border-radius: 30px;
+    border-color: #c7e0b7;
+    color: #507C35;
+    font-size: 45px;
+    font-weight: bold;
+    transition: .2s linear;
+    background: #c7e0b7;
+    height:70px;
+    width:600px;
+    margin-top: 120px;
+    box-shadow: 10px 5px 5px darkolivegreen;
+}
+
+.btn-home-new:hover {
+    transform: translate(0,-3px);
+    box-shadow: 30px 15px 15px darkolivegreen;
+    /*box-shadow: 0 20px 40px 0 darkolivegreen;*/
+}
+
+.btn-home-new:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -200px;
+    width: 100px;
+    height: 100px;
+    background-color: #fff;
+    filter: blur(30px);
+    transform: skewX(30deg) translateZ(0);
+    transition: 1s;
+    animation-name: slideme;
+    animation-duration: 3s;
+    animation-delay: 0.05s;
+    animation-timing-function: ease;
+    animation-iteration-count: infinite;
+}
+
+.text-home {
+    -webkit-text-stroke: 1px #000000;
+    text-stroke: 1px #000000;
+}
+
+.success {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+}
+#countdown {
+    font-size: 30px;
+    color: darkgreen;
+    font-family:'Trebuchet MS', Helvetica, sans-serif;
+    position:absolute;
+    width:100%;
+    top:40%;
+    text-align:center;
+}
+
+.success-text-center {
+    position:absolute;
+    width:100%;
+    top:20%;
+    text-align:center;
+}
