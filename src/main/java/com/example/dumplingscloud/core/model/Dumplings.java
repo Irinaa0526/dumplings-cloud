@@ -2,13 +2,17 @@ package com.example.dumplingscloud.core.model;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Date;
 import java.util.List;
 
 @Data
+@Table
 public class Dumplings {
 
+    @Id
     private Long id;
     @NotNull
     @jakarta.validation.constraints.Size(min=5, message="Name must be at least 5 characters long")

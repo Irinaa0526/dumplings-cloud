@@ -87,7 +87,7 @@
             </div>
             <div class="text-field">
                 <label class="text-field__label-design" for="name">Name your dumplings creation:</label>
-                <input class="text-field__input-design" type="text" name="name" id="name" placeholder="Name" autocomplete="off" th:field="*{name}">
+                <input class="text-field__input-design" type="text" name="name" id="name" placeholder="Name" th:field="*{name}">
                 <span class="validationError"
                       th:if="${#fields.hasErrors('name')}"
                       th:errors="*{name}">Name Error</span>
