@@ -1,27 +1,31 @@
 package com.example.dumplingscloud.core.controller;
 
+import com.example.dumplingscloud.core.model.Dumplings;
 import com.example.dumplingscloud.core.model.DumplingsOrder;
+import com.example.dumplingscloud.core.repo.DumplingsRepository;
 import com.example.dumplingscloud.core.repo.OrderRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+
+import java.util.List;
 
 @Slf4j
 @Controller
 @RequestMapping("/orders")
-@SessionAttributes("dumplingsOrder")
+@SessionAttributes({"dumplingsOrder", "dumplingsList"})
 public class OrderController {
 
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
+    private final DumplingsRepository dumplingsRepository;
 
-    public OrderController(OrderRepository orderRepository) {
+    public OrderController(OrderRepository orderRepository, DumplingsRepository dumplingsRepository) {
         this.orderRepository = orderRepository;
+        this.dumplingsRepository = dumplingsRepository;
     }
 
     @GetMapping("/current")
@@ -31,13 +35,29 @@ public class OrderController {
 
     @PostMapping
     public String processOrder(@Valid DumplingsOrder dumplingsOrder, Errors errors,
-                               SessionStatus sessionStatus) {
+                               List<Dumplings> dumplingsList,
+                               SessionStatus sessionStatus, Model model) {
         if (errors.hasErrors()) {
             return "orderForm";
         }
-        orderRepository.save(dumplingsOrder);
-        log.info("Order submitted: {}", dumplingsOrder);
-        sessionStatus.setComplete();
+
+        try {
+            dumplingsRepository.saveAll(dumplingsList);
+            try {
+                orderRepository.save(dumplingsOrder);
+            } catch (Exception e) {
+                dumplingsRepository.deleteAll(dumplingsList);
+                log.error("processOrder: Order saved error");
+                model.addAttribute("error", "Order creation error. Try again");
+                return "orderForm";
+            }
+            log.info("Order submitted: {}", dumplingsOrder);
+            sessionStatus.setComplete();
+        } catch (Exception e) {
+            log.error("processOrder: Dumplings saved error");
+            model.addAttribute("error", "Order creation error. Try again");
+            return "orderForm";
+        }
 
         return "redirect:/success";
     }

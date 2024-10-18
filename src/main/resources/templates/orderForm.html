@@ -90,7 +90,9 @@
                               th:errors="*{ccCVV}">CC CVV Error</span>
                     </td>
                 </table>
+                <div th:if="${error}" style="color: red;"&gt;&lt;br&gt;        &lt;p th:text="${error}"></p></div>
             </div>
+
             <input class="btn-new" type="submit" value="Submit Order"/>
         </form>
     </body>

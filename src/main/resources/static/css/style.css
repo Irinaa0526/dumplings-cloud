@@ -131,6 +131,7 @@
 .text-field__label-order {
     display: block;
     margin-bottom: 10px;
+    margin-top: 5px;
     font-size: 1rem;
 }
 /* стили для input */
@@ -171,6 +172,8 @@
 
 .validationError {
     color: red;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
 }
 
 @keyframes slideme {
