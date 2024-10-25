@@ -1,31 +1,28 @@
 package com.example.dumplingscloud.core.model;
 
-import com.datastax.oss.driver.api.core.uuid.Uuids;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
-import org.springframework.data.cassandra.core.mapping.Column;
-import org.springframework.data.cassandra.core.mapping.PrimaryKey;
-import org.springframework.data.cassandra.core.mapping.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Data
-@Table("orders")
+@Document(collection = "orders")
 public class DumplingsOrder implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @PrimaryKey
-    private UUID id = Uuids.timeBased();
+    @Id
+    private String id;
 
     @NotBlank(message="Delivery name is required")
     private String deliveryName;
@@ -54,10 +51,9 @@ public class DumplingsOrder implements Serializable {
 
     private Date placedAt = new Date();
 
-    @Column("dumplings")
-    private List<DumplingsUDT> dumplings = new ArrayList<>();
+    private List<Dumplings> dumplings = new ArrayList<>();
 
-    public void addDumplings(DumplingsUDT dumplings) {
+    public void addDumplings(Dumplings dumplings) {
         this.dumplings.add(dumplings);
     }
 }
