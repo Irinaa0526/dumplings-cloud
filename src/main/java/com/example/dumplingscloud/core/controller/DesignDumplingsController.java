@@ -2,6 +2,7 @@ package com.example.dumplingscloud.core.controller;
 
 import com.example.dumplingscloud.core.model.Dumplings;
 import com.example.dumplingscloud.core.model.DumplingsOrder;
+import com.example.dumplingscloud.core.model.DumplingsUDT;
 import com.example.dumplingscloud.core.model.Ingredient;
 import com.example.dumplingscloud.core.repo.IngredientRepository;
 import jakarta.validation.Valid;
@@ -72,7 +73,7 @@ public class DesignDumplingsController {
             return "design";
         }
         dumplingsList.add(dumplings);
-        dumplingsOrder.addDumplings(dumplings);
+        dumplingsOrder.addDumplings(new DumplingsUDT(dumplings.getName(), dumplings.getIngredients()));
         log.info("Processing dumplings: {}", dumplings);
 
         return "redirect:/orders/current";

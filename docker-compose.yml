@@ -8,11 +8,25 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - mongo
-    environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/dumplingscloud
+      cassandra:
+        condition: service_healthy
 
-  mongo:
-    image: mongo:latest
+  cassandra:
+    image: cassandra:latest
     ports:
-      - "27017:27017"
+      - "9042:9042"
+    healthcheck:
+      test: [ "CMD-SHELL", "cqlsh -e 'describe cluster'" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  sample-data:
+    image: cassandra:latest
+    depends_on:
+      cassandra:
+        condition: service_healthy
+    restart: "no"
+    entrypoint: ["/create_cassandradb_keyspace.sh"]
+    volumes:
+      - ./create_cassandradb_keyspace.sh:/create_cassandradb_keyspace.sh
