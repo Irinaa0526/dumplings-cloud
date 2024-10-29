@@ -20,11 +20,11 @@ create table if not exists Dumplings (
     created_at timestamp not null
 );
 
-create table if not exists Ingredient_Ref (
-    ingredient_id varchar(4) not null,
-    dumplings_id bigint not null,
-    dumplings_key bigint not null
-);
+-- create table if not exists Ingredient_Ref (
+--     ingredient_id varchar(4) not null,
+--     dumplings_id bigint not null,
+--     dumplings_key bigint not null
+-- );
 
 create table if not exists Ingredient (
     id varchar(4) not null,
@@ -34,6 +34,6 @@ create table if not exists Ingredient (
 
 alter table Ingredient add primary key (id);
 alter table Dumplings add foreign key (dumplings_order) references Dumplings_Order(id);
-alter table Ingredient_Ref add primary key (ingredient_id, dumplings_id);
-alter table Ingredient_Ref add foreign key (ingredient_id) references Ingredient(id);
-alter table Ingredient_Ref add foreign key (dumplings_id) references Dumplings(id);
+-- alter table Ingredient_Ref add primary key (ingredient_id, dumplings_id);
+-- alter table Ingredient_Ref add foreign key (ingredient_id) references Ingredient(id);
+-- alter table Ingredient_Ref add foreign key (dumplings_id) references Dumplings(id);

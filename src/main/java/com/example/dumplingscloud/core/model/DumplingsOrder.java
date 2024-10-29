@@ -1,12 +1,11 @@
 package com.example.dumplingscloud.core.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,14 +14,15 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@Document(collection = "orders")
+@Entity
 public class DumplingsOrder implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @NotBlank(message="Delivery name is required")
     private String deliveryName;
@@ -51,6 +51,7 @@ public class DumplingsOrder implements Serializable {
 
     private Date placedAt = new Date();
 
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Dumplings> dumplings = new ArrayList<>();
 
     public void addDumplings(Dumplings dumplings) {
